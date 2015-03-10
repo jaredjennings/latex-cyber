@@ -102,19 +102,19 @@
 % This package helps you construct documents that talk about compliance with
 % named requirements.
 %
-% For example, U.S. Department of Defense (DoD) Instruction (DoDI) 8500.2 sets
-% out the \emph{IA controls}, a set of 157 requirements for DoD information
-% systems. One such requirement regards the control of user accounts used for
-% authentication to a system; it's named ``Account Control'' and given an
-% identifier, IAAC-1. You may wish to write a document that says something
-% like, ``We comply with IAAC-1, and here's how.'' This package is made for
-% you.
+% For example, U.S. National Institute of Standards and Technology
+% (NIST) Special Publication (SP) 800-53 sets out \emph{security
+% controls} for U.S. Federal agency information systems, one of which
+% is AC-2c, ``[The organization] establishes conditions for group and
+% role membership.'' You may wish to write a document that says, ``We
+% comply with AC-2c, and here's how.'' This package is for you.
+%
 %
 % \section{Document identifiers}
 %
 % Your document may talk about compliance with named requirements from multiple
-% sources. For example, besides compliance with DoDI 8500.2 you might want to
-% also talk about compliance with the U.S. Defense Information Services Agency
+% sources. For example, besides compliance with NIST SP 800-53 you might want to
+% also talk about compliance with the U.S. Defense Information Systems Agency
 % (DISA) UNIX Operating System (OS) Security Requirements Guide (SRG). Now to
 % fully identify a requirement, you need to identify both the requirement and
 % the document it comes from, for example ``IA control IAAC-1,'' or ``UNIX SRG
@@ -122,8 +122,8 @@
 %
 % At the beginning of your document, you must identify all sources of named
 % requirements; then you can talk about those sources when you are identifying
-% the requirements. As examples here we use DoDI 8500.2, and assign it the
-% document identifier |iacontrol|; and we use the UNIX SRG, identifying it by
+% the requirements. As examples here we use NIST SP 800-53, and assign it the
+% document identifier |secctrl|; and we use the UNIX SRG, identifying it by
 % |unixsrg|. See~\S\ref{document_identifiers} for more.
 %
 %
@@ -149,8 +149,8 @@
 %
 % \begin{itemize}
 % \item
-% \DescribeMacro{\iacontrol}
-% |\iacontrol| \marg{control identifier}
+% \DescribeMacro{\secctrl}
+% |\secctrl| \marg{control identifier}
 % \item
 % \DescribeMacro{\unixsrg}
 % |\unixsrg| \marg{PDI}
@@ -180,8 +180,8 @@
 % type of requirement, and the name of the requirement. Example:
 %
 % \begin{verbatim}
-% \documents{iacontrol}{DCMC-1} We use only JavaScript, which is Category I
-% mobile code.
+% \documents{secctrl}{SC-18} We use only JavaScript, which is Category I
+% mobile code according to DoD guidelines.
 % \end{verbatim}
 %
 % Some requirements say something like, ``All \emph{mumble}s must be justified
@@ -207,7 +207,7 @@
 % certain situation, put the |\notapplicable| tag. For example:
 %
 % \begin{verbatim}
-% \notapplicable{iacontrol}{DCMC-1} We do not use mobile code at all.
+% \notapplicable{secctrl}{SC-18(5)} We do not use mobile code at all.
 % \end{verbatim}
 %
 % \DescribeMacro{\implements}
@@ -294,7 +294,7 @@
 %
 % \DescribeMacro{\booksecuritylabel}
 % |\booksecuritylabel| acts the same as |\articlesecuritylabel|, but this is
-% the one you should use if you are using the |book| document class.
+% the one you should use if you are using the \textsf{book} document class.
 %
 % Part of marking a document properly is writing the distribution statement and
 % statement of disposition on the title page.
@@ -311,7 +311,7 @@
 % see the DoD instruction.
 %
 % Just like you need |\maketitle| to make your |\title| show up, you need to
-% use |\makedodtitle| to make your distribution statement show up.
+% (instead) use |\makedodtitle| to make your distribution statement show up.
 %
 % \DescribeMacro{\distributionA}
 % To mark your document with Distro A (public release), write |\distributionA|
@@ -400,9 +400,10 @@
 % \begin{description}
 % \item[iacontrol] Information Assurance Controls, laid out in DoDI
 % 8500.2, e.g. DCMC-1.
+% \item[secctrl] Security Controls, laid out in NIST SP 800-53, e.g. SC-18c.
 % \item[unixsrg] UNIX Security Requirements Guide (SRG) Potential
 % Discrepancy Identifiers (PDIs), e.g. GEN008520. (The UNIX SRG was
-% previously known as the UNIX Security Technical Implementation Guide
+% long ago known as the UNIX Security Technical Implementation Guide
 % [STIG].)
 % \item[apachestig] Apache 2.2 STIG PDIs. These can be either from the
 % Apache 2.2 Server STIG or the Apache 2.2 Site STIG.
@@ -413,7 +414,7 @@
 % \item[databasestig] Generic Database STIG PDIs.
 % \end{description}
 %
-% These identifiers are written in every compliance tag.
+% These identifiers are written in every compliance tag, so make them short but unique.
 %
 % \subsection{Defining requirements documents}
 %
@@ -431,7 +432,7 @@
 %
 % \begin{verbatim}
 % \documents{joesaidso}{Joe34} We close the door when going outside, because
-% Joe said to. Door-closing logs are kept by the door.
+% Joe said to. Door-closing logs are kept just inside the door.
 % \end{verbatim}
 %
 % The second parameter is the header under which all requirements from this
@@ -639,16 +640,18 @@
 % \begin{macro}{\requirementsdocument}
 % Usage: |\requirementsdocument| \marg{tag} \marg{index heading}
 % \marg{requirement title}. The tag is a one-word lowercase name, like
-% iacontrol or unixsrg or rhel5stig, that you'll use in |\implements| and other
-% tags to say from which document comes the requirement you're talking about.
-% An index of compliance will be made; |index title| is the title under which
-% all compliance with this document will be listed in the compliance index, for
-% example ``DoDI 8500.2 IA Controls.'' The |requirement title| is how to name a
-% requirement from that document. For example, the DISA UNIX SRG contains many
-% requirements, called Potential Discrepancy Items (PDI). So you may give
-% ``UNIX SRG PDI '' (note the space at the end) as the requirement title, and
-% when a requirement is named using |\requirement| it will be prefixed with the
-% title, e.g. ``UNIX SRG PDI GEN006480.''
+% iacontrol or unixsrg or rhel5stig, that you'll use in |\implements|
+% and other tags to say from which document comes the requirement
+% you're talking about.  An index of compliance will be made; |index
+% title| is the title under which all compliance with this document
+% will be listed in the compliance index, for example ``NIST SP 800-53
+% Security Controls.'' The |requirement title| is how to name a
+% requirement from that document. For example, the DISA UNIX SRG
+% contains many requirements, called Potential Discrepancy Items
+% (PDI). So you may give ``UNIX SRG PDI '' (note the space at the end)
+% as the requirement title, and when a requirement is named using
+% |\requirement| it will be prefixed with the title, e.g. ``UNIX SRG
+% PDI GEN006480.''
 % 
 % Write all |\requirementsdocument|s in the preamble of the document.
 %
@@ -1097,7 +1100,7 @@
     \phantomsection
     \chapter*{Executive Summary}
     \addcontentsline{toc}{chapter}{Executive Summary}
-    The following table lists the DoDI 8500.2 IA Controls that are satisfied
+    The following table lists the NIST SP 800-53 Security Controls that are satisfied
     through this artifact.
 
     \begin{longtable}{@{\extracolsep{\fill}} l p{4in}}
