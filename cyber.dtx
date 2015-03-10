@@ -34,8 +34,8 @@
 %<*driver>
 \documentclass{ltxdoc}
 
-\usepackage{verbatim}
-
+\usepackage{fancyvrb}
+\DefineShortVerb{\|}
 
 
 % Make PDF magic happen.
@@ -160,10 +160,10 @@
 % named at the beginning of your document; see~\S\ref{document_identifiers}.
 %
 % Example:
-% \begin{verbatim}
+% \begin{Verbatim}[gobble=2]
 % Compliance with such and such requirement is similar to compliance with
 % \unixsrg{GEN002600}, \emph{q.v.}.
-% \end{verbatim}
+% \end{Verbatim}
 %
 %
 % \subsection{Making assertions about compliance posture}
@@ -179,10 +179,10 @@
 % about a system which supports a requirement. It takes two parameters: the
 % type of requirement, and the name of the requirement. Example:
 %
-% \begin{verbatim}
+% \begin{Verbatim}[gobble=2]
 % \documents{secctrl}{SC-18} We use only JavaScript, which is Category I
 % mobile code according to DoD guidelines.
-% \end{verbatim}
+% \end{Verbatim}
 %
 % Some requirements say something like, ``All \emph{mumble}s must be justified
 % and documented with the Information Assurance Officer (IAO).'' Use
@@ -192,11 +192,11 @@
 % For example, the UNIX SRG requires that UNIX systems unable to require a
 % password to enter single-user mode must be documented with the IAO.
 %
-% \begin{verbatim}
+% \begin{Verbatim}[gobble=2]
 % \documented{unixsrg}{GEN000040} UNIX hosts unable to require a password
 % to enter single-user mode must be documented with the IAO. We administer
 % no such UNIX hosts.
-% \end{verbatim}
+% \end{Verbatim}
 % (This is written in a document which is produced under the IAO's purview
 % and approval; otherwise it would have to point to another document which is
 % ``with the IAO.'')
@@ -206,24 +206,24 @@
 % Just before some discussion about why a requirement is not applicable in a
 % certain situation, put the |\notapplicable| tag. For example:
 %
-% \begin{verbatim}
+% \begin{Verbatim}[gobble=2]
 % \notapplicable{secctrl}{SC-18(5)} We do not use mobile code at all.
-% \end{verbatim}
+% \end{Verbatim}
 %
 % \DescribeMacro{\implements}
 % The |\implements| tag notates a section of code or documentation which
 % directly implements a requirement. It's usually used in automated policy. For
-% example, the UNIX SRG says under GEN001362, ``The \verb!/etc/resolv.conf!
+% example, the UNIX SRG says under GEN001362, ``The \Verb!/etc/resolv.conf!
 % file must be owned by root.'' A piece of Puppet policy that implements this
 % requirement may go like:
 %
-% \begin{verbatim}
+% \begin{Verbatim}[gobble=2]
 % # \implements{unixsrg}{GEN001362} Make sure resolv.conf 
 % # is owned by root.
 %     file { '/etc/resolv.conf':
 %         owner => root,
 %     }
-% \end{verbatim}
+% \end{Verbatim}
 %
 %
 % \DescribeMacro{\doneby}
@@ -234,23 +234,23 @@
 % that SELinux be turned on when installing RHEL5. Administrators have to make
 % sure it's enabled during the install process.
 %
-% \begin{verbatim}
+% \begin{Verbatim}[gobble=2]
 % \doneby{admins}{rhel5stig}{GEN000000-LNX00800} Make sure SELinux is enabled
 % when installing RHEL5.
-% \end{verbatim}
+% \end{Verbatim}
 %
 % \DescribeMacro{\bydefault}
 % Use the |\bydefault| tag to talk about how a product we use implements a
 % given requirement in its default configuration. It takes three parameters:
 % the product we're talking about, the kind of requirement, and the
 % requirement's name.---For example, the UNIX SRG says under GEN001300 that all
-% library files must have mode \verb!0755! or less permissive. Both RHEL 5 and
+% library files must have mode \Verb!0755! or less permissive. Both RHEL 5 and
 % RHEL 6 systems have this property by default.
 %
-% \begin{verbatim}
+% \begin{Verbatim}[gobble=2]
 % \bydefault{RHEL5, RHEL6}{unixsrg}{GEN001300} All library files under RHEL
-% are mode \verb!0755! or less permissive by default.
-% \end{verbatim}
+% are mode \Verb!0755! or less permissive by default.
+% \end{Verbatim}
 %
 %
 % \DescribeMacro{\unimplemented}
@@ -261,14 +261,14 @@
 %
 % Note carefully that this tag has three parameters: the kind of
 % requirement, the exact requirement, and \emph{the reason} the requirement
-% is unimplemented. You can't use \verb!\verb! in the reason. Stick with plain
+% is unimplemented. You can't use \Verb!\Verb! in the reason. Stick with plain
 % text.
 %
-% \begin{verbatim}
+% \begin{Verbatim}[gobble=2]
 % \unimplemented{unixsrg}{GEN008380}{Unless root kit checking functionality
 % is provided by the virus scanner, we would likely want to deploy
 % {\tt chkrootkit}. But this software is not yet approved...}
-% \end{verbatim}
+% \end{Verbatim}
 %
 %
 %
@@ -288,9 +288,9 @@
 % Most reStructuredText documents use the article class.
 %
 % Example, in \LaTeX :
-% \begin{verbatim}
+% \begin{Verbatim}[gobble=2]
 % \articlesecuritylabel{UNCLASSIFIED//FOUO}
-% \end{verbatim}
+% \end{Verbatim}
 %
 % \DescribeMacro{\booksecuritylabel}
 % |\booksecuritylabel| acts the same as |\articlesecuritylabel|, but this is
@@ -346,12 +346,12 @@
 % \section{Document formatting aids}
 %
 % \DescribeMacro{\makedodtitle} In a book-class document, use
-% |\makedodtitle| instead of \verb!\maketitle!  and you will get an
+% |\makedodtitle| instead of \Verb!\maketitle!  and you will get an
 % organization logo on your title page. You'll also get the distribution
 % statement. You must provide the organization logo, as a graphics file of a
-% suitable format (\emph{e.g.}, PNG or PDF if you're using \verb!pdflatex!, EPS
-% if you're using \verb!latex!, that sort of thing), entitled \verb!org_logo!,
-% \emph{e.g.} \verb!org_logo.png!.
+% suitable format (\emph{e.g.}, PNG or PDF if you're using \Verb!pdflatex!, EPS
+% if you're using \Verb!latex!, that sort of thing), entitled \Verb!org_logo!,
+% \emph{e.g.} \Verb!org_logo.png!.
 %
 % \DescribeMacro{\narrowermargins}
 % In the top of your document, put |\narrowermargins| to make all of the
@@ -361,10 +361,10 @@
 %
 % This has not been tested much, and only on a book-class document.
 %
-% Write a changelog and call it \verb!changelog.tex!. Include it in your
+% Write a changelog and call it \Verb!changelog.tex!. Include it in your
 % front matter just after the table of contents. Its format is like so:
 %
-% \begin{verbatim}
+% \begin{Verbatim}[gobble=2]
 % \begin{changelog}
 %
 % \change{3 Aug 2011}{Jared Jennings}{Added Backup Plan}
@@ -373,18 +373,18 @@
 % Baseline to match}
 %
 % \end{changelog}
-% \end{verbatim}
+% \end{Verbatim}
 %
 % Add new entries to the top of the changelog, not the bottom.
 %
 % An ``executive summary'' is supported. This is just a section containing a
 % table which lays out the IA controls documented. Its format is like so:
 %
-% \begin{verbatim}
+% \begin{Verbatim}[gobble=2]
 % \begin{executivesummary}
 % \executivesummaryiacontrol{IAIA-1}{Individual Authentication}
 % \end{executivesummary}
-% \end{verbatim}
+% \end{Verbatim}
 %
 % Put it after the changelog, after the ToC.
 %
@@ -422,30 +422,30 @@
 % documents your requirements will come. \DescribeMacro{\requirementsdocument}
 % Use the |\requirementsdocument| macro to do this. For example,
 %
-% \begin{verbatim}
+% \begin{Verbatim}[gobble=2]
 % \requirementsdocument{joesaidso}{Joe's Demands}{Demand }
-% \end{verbatim}
+% \end{Verbatim}
 %
 % The first parameter is the document identifier, which is used in the
 % compliance tags. For example, after this |\requirementsdocument|, in the body
 % of our document we could write
 %
-% \begin{verbatim}
+% \begin{Verbatim}[gobble=2]
 % \documents{joesaidso}{Joe34} We close the door when going outside, because
 % Joe said to. Door-closing logs are kept just inside the door.
-% \end{verbatim}
+% \end{Verbatim}
 %
 % The second parameter is the header under which all requirements from this
 % document will be placed in the Compliance index. Given the above code, the
 % index might look like:
 %
-% \begin{verbatim}
+% \begin{Verbatim}[gobble=2]
 % Compliance
 %
 %  Joe's Demands
 %    Joe34
 %      documented, 3
-% \end{verbatim}
+% \end{Verbatim}
 %
 % The third parameter is the prefix with which requirements from this document
 % will be named. For example, if we were to write |\joesaidso{Joe34}| in the
@@ -464,9 +464,9 @@
 %
 % At the top of your document, in its preamble, put the following lines:
 %
-% \begin{verbatim}
+% \begin{Verbatim}[gobble=2]
 % \usepackage{cyber}
-% \end{verbatim}
+% \end{Verbatim}
 %
 % This makes the indices that the \textsf{cyber} tags put entries into. Make sure
 % that if your document uses the hyperref package, that it does so before
@@ -479,9 +479,9 @@
 % section's title written in the table of contents, use this additional
 % package:
 %
-% \begin{verbatim}
+% \begin{Verbatim}[gobble=2]
 % \usepackage{iacic}
-% \end{verbatim}
+% \end{Verbatim}
 %
 % Write this after the usepackage directive for \textsf{cyber}. If you use the
 % hyperref package, write this statement after the usepackage directive for
@@ -497,9 +497,9 @@
 %
 % In any case, somewhere at the end of your document, put
 %
-% \begin{verbatim}
+% \begin{Verbatim}[gobble=2]
 % \printindex{compliance}{Compliance}
-% \end{verbatim}
+% \end{Verbatim}
 %
 % This grabs the index made and makes it part of the final document.
 %
@@ -516,11 +516,11 @@
 % Use these macros to turn off and on (respectively) indexing of compliance
 % assertions for part of your document. For example:
 %
-% \begin{verbatim}
+% \begin{Verbatim}[gobble=2]
 % \Iaindexingenabledfalse
 % \include{auto_summary}
 % \Iaindexingenabledtrue
-% \end{verbatim}
+% \end{Verbatim}
 %
 %
 % \section{Constraints}
@@ -1053,9 +1053,9 @@
 % \begin{environment}{changelog}
 % \begin{macro}{\change}
 % Usage: |\change| \marg{when} \marg{who} \marg{what}. For example,
-% \begin{verbatim}
+% \begin{Verbatim}[gobble=2]
 % \change{3 Aug 2011}{Jared Jennings}{Added backup plan}
-% \end{verbatim}
+% \end{Verbatim}
 %
 %    \begin{macrocode}
 \newcommand{\change}[3]{%
