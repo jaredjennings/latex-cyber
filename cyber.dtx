@@ -356,6 +356,15 @@
 % \emph{e.g.} \Verb!org_logo.png!.
 %
 % \DescribeMacro{\narrowermargins}
+%
+% Nobody appreciates the rules of typography these days. And making a bad
+% impression on auditors by submitting a document that doesn't look how they
+% expect is a needless risk.
+%
+% This macro narrows the margins, while leaving a sizable margin in which to
+% write text. It probably only works on books (not articles). It takes the
+% security label into account.
+%
 % In the top of your document, put |\narrowermargins| to make all of the
 % margins narrower by a half inch, increasing the text area by one inch
 % horizontally and one inch vertically.  You have to put it above the security
@@ -364,6 +373,15 @@
 % This has not been tested much, and only on a book-class document.
 %
 % \subsection{Change log}
+%
+% Most documents submitted in support of cybersecurity goals must
+% indicate what version they are, and what changes have happened between
+% versions. In software development terminology, these correspond to
+% \emph{releases}, not \emph{revisions} or \emph{changesets}; that is to say,
+% these versions are likely not to change more than once a month, and changes
+% are likely to be, ``Added a new chapter about foo,'' rather than ``Corrected
+% spelling on page 358.''
+%
 % Write a changelog and call it \Verb!changelog.tex!. Include it in your
 % front matter just after the table of contents. Its format is like so:
 %
@@ -533,6 +551,9 @@
 % automatically indexes things may not work in conjunction with
 % \textsf{cyber}.
 %
+% \textsf{cyber} also pulls in \textsf{color}, \textsf{fancyhdr} and
+% \textsf{graphicx}.
+%
 %
 %
 %
@@ -601,7 +622,7 @@
 % Put another way: \meta{\#1} is a function to call once for each
 % comma-separated item in \meta{\#4}. \meta{\#2} and \meta{\#3} are parameters to
 % pass to function in \meta{\#1} as the first parameters.  \meta{\#4} is a
-% comma-separated list of items, each of which to pass as the second parameter
+% comma-separated list of items, each of which to pass as the third parameter
 % to an invocation of function \meta{\#1}.
 %    \begin{macrocode}
 \def\foreach#1#2#3#4{%
@@ -610,13 +631,13 @@
 %    \end{macrocode}
 % \end{macro}
 
-% Internal helper function - Eats one input
+% Internal helper function - Eats one input.
 %    \begin{macrocode}
 \def\@swallow#1{}
 %    \end{macrocode}
 
 % Internal helper function - Checks the next character after \#1 and \#2 and
-% continues loop iteration if |\@end@token| is not found 
+% continues loop iteration if |\@end@token| is not found.
 %    \begin{macrocode}
 \def\@test@foreach#1#2#3{%
   \@ifnextchar\@end@token%
@@ -625,9 +646,9 @@
 }
 %    \end{macrocode}
 
-% Internal helper function - Calls |#1{#2}{#3}{#4}| and recurses
+% Internal helper function - Calls |#1{#2}{#3}{#4}| and recurses.
 % The magic of splitting the third parameter occurs in the pattern matching of
-% the |\def|
+% the |\def|.
 %    \begin{macrocode}
 \def\@foreach#1#2#3#4,#5\@end@token{%
   #1{#2}{#3}{#4}%
@@ -642,7 +663,7 @@
 % iacontrol or unixsrg or rhel5stig, that you'll use in |\implements|
 % and other tags to say from which document comes the requirement
 % you're talking about.  An index of compliance will be made;
-% |index title| is the title under which all compliance with this document
+% |index heading| is the title under which all compliance with this document
 % will be listed in the compliance index, for example ``NIST SP 800-53
 % Security Controls.'' The |requirement title| is how to name a
 % requirement from that document. For example, the DISA UNIX SRG
@@ -675,20 +696,6 @@
     \expandafter\csname requirement@#1\endcsname{#2}}
 %    \end{macrocode}
 % \end{macro}
-    
-% \begin{macro}{\printrequirementsindex}
-% Usage: |\printrequirementsindex| \marg{tag} \marg{index title}.
-% |tag| must be a tag given as an argument to |\requirementsdocument| above.
-% |index title| is the title for the index.
-%    \begin{macrocode}
-\newcommand\printrequirementsindex[2]{%
-\cleardoublepage
-\phantomsection
-\label{index_#1}
-\printindex{#1}{#2}
-}
-%    \end{macrocode}
-% \end{macro}
 
 % \begin{macro}{\namedrequirement}
 % Usage: |\namedrequirement| \marg{index name} \marg{official title prefix} \marg{requirement name}.
@@ -707,37 +714,43 @@
 %    \end{macrocode}
 % \end{macro}
 %
-% This will be redefined by \textsl{iacic} if that package is included.
+% This will be redefined by \textsf{iacic} if that package is included.
 %    \begin{macrocode}
 \def\addtosectionname#1{}
 %    \end{macrocode}
-
-
+%
+% This is here so you can turn off indexing for a portion of your document.
 %    \begin{macrocode}
 \newif\ifIaindexingenabled
-% default to true
 \Iaindexingenabledtrue
 %    \end{macrocode}
+%
 % Style the text for per-document heads in the compliance index.
 %    \begin{macrocode}
 \newcommand{\iaindexheadstyle}[1]{%
     \vspace{1em}{\large \textbf{#1}}\vspace{1em}}
 %    \end{macrocode}
+%
 % parameters: index name, implementation status, requirement name
 %    \begin{macrocode}
 \newcommand{\indexhelper}[3]{%
 \ifIaindexingenabled\index{compliance}{\csname indexhead@#1\endcsname @\iaindexheadstyle{\csname indexhead@#1\endcsname}!{#3}!{#2}}\fi}
 %    \end{macrocode}
+%
 % parameters: index name, prefix (e.g. {RHEL5: }), requirement name
 %    \begin{macrocode}
 \newcommand{\marginhelper}[3]{#2~\mbox{#3}\\ }
 %    \end{macrocode}
-% parameters: index name, compliance status, requirement name
-% compliance status is not necessarily the same as implementation status
+%
+% parameters: index name, compliance status, requirement name.
+% Compliance status is not necessarily the same as implementation status.
 %    \begin{macrocode}
 \newcommand{\compliancehelper}[3]{%
 \write\complianceaux{#1:#3:#2}}
+%    \end{macrocode}
+%
 % parameters: index name, explanation, requirement name
+%    \begin{macrocode}
 \newcommand{\explanationshelper}[3]{%
 \write\explanationsaux{#1:#3:}%
 \write\explanationsaux{#2}%
@@ -753,6 +766,9 @@
     \ifx\@numberone\@iacontrol\addtosectionname{#3}\fi}
 %    \end{macrocode}
 %
+%    \begin{macrocode}
+\def\iamarginsize{\footnotesize}
+%    \end{macrocode}
 %
 % These all take two parameters.
 % The first parameter is the identifier of the document from which the
@@ -763,10 +779,6 @@
 %
 % Example: |\implements{unixsrg}{GEN000320,GEN000340}|
 %
-%    \begin{macrocode}
-\def\iamarginsize{\footnotesize}
-%    \end{macrocode}
-
 %    \begin{macrocode}
 \newcommand{\implements}[2]{%
     \@bsphack
@@ -779,9 +791,6 @@
     \foreach{\compliancehelper}{#1}{compliant}{#2}%
     \foreach{\sectionnamehelper}{#1}{}{#2}%
     \@esphack}
-%    \end{macrocode}
-
-%    \begin{macrocode}
 \newcommand{\unimplemented}[3]{%
     \@bsphack
     \hspace{0pt}% this makes sure the marginpar doesn't go with the previous
@@ -796,8 +805,9 @@
     {#3}%
     \@esphack}
 %    \end{macrocode}
-
-% parameters: OSes, type of requirement, requirement(s)
+%
+% Except this one takes three parameters: operating system(s),
+% identifier of requiring document, requirement(s).
 %    \begin{macrocode}
 \newcommand{\bydefault}[3]{%
     \@bsphack
@@ -811,7 +821,7 @@
     \foreach{\sectionnamehelper}{#1}{}{#2}%
     \@esphack}
 %    \end{macrocode}
-
+%
 %    \begin{macrocode}
 \newcommand{\notapplicable}[2]{%
     \@bsphack
@@ -969,17 +979,6 @@
 % \end{macro}
 %
 %
-% FIXME: other distribution statements are not yet supported. Patches
-% gratefully accepted.
-%
-%
-% Most documents submitted in support of information assurance (IA) goals must
-% indicate what version they are, and what changes have happened between
-% versions. In software development terminology, these correspond to
-% \emph{releases}, not \emph{revisions} or \emph{changesets}; that is to say,
-% these versions are likely not to change more than once a month, and changes
-% are likely to be, ``Added a new chapter about foo,'' rather than ``Corrected
-% spelling on page 358.''
 
 %    \begin{macrocode}
 \def\@version{}
@@ -1004,13 +1003,6 @@
 % \end{macro}
 
 % \begin{macro}{\narrowermargins}
-% Nobody appreciates the rules of typography these days. And making a bad
-% impression on auditors by submitting a document that doesn't look how they
-% expect is a needless risk.
-%
-% This macro narrows the margins, while leaving a sizable margin in which to
-% write text. It probably only works on books (not articles). It takes the
-% security label into account.
 %    \begin{macrocode}
 \newcommand{\narrowermargins}{%
     \addtolength{\hoffset}{-0.5in}%
@@ -1110,7 +1102,5 @@
 }{\end{longtable}}
 %    \end{macrocode}
 % \end{environment}
-
 \makeatother
-
 % \Finale
