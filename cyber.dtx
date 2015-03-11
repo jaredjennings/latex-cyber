@@ -193,7 +193,7 @@
 % password to enter single-user mode must be documented with the IAO.
 %
 % \begin{Verbatim}[gobble=2]
-% \documented{unixsrg}{GEN000040} UNIX hosts unable to require a password
+% \documents{unixsrg}{GEN000040} UNIX hosts unable to require a password
 % to enter single-user mode must be documented with the IAO. We administer
 % no such UNIX hosts.
 % \end{Verbatim}
@@ -235,8 +235,8 @@
 % sure it's enabled during the install process.
 %
 % \begin{Verbatim}[gobble=2]
-% \doneby{admins}{rhel5stig}{GEN000000-LNX00800} Make sure SELinux is enabled
-% when installing RHEL5.
+% \doneby{admins}{rhel5stig}{GEN000000-LNX00800} Make sure SELinux is
+% enabled when installing RHEL5.
 % \end{Verbatim}
 %
 % \DescribeMacro{\bydefault}
@@ -248,8 +248,8 @@
 % RHEL 6 systems have this property by default.
 %
 % \begin{Verbatim}[gobble=2]
-% \bydefault{RHEL5, RHEL6}{unixsrg}{GEN001300} All library files under RHEL
-% are mode \Verb!0755! or less permissive by default.
+% \bydefault{RHEL5, RHEL6}{unixsrg}{GEN001300} All library files under
+% RHEL are mode \Verb!0755! or less permissive by default.
 % \end{Verbatim}
 %
 %
@@ -265,9 +265,10 @@
 % text.
 %
 % \begin{Verbatim}[gobble=2]
-% \unimplemented{unixsrg}{GEN008380}{Unless root kit checking functionality
-% is provided by the virus scanner, we would likely want to deploy
-% {\tt chkrootkit}. But this software is not yet approved...}
+% \unimplemented{unixsrg}{GEN008380}{Unless root kit checking
+% functionality is provided by the virus scanner, we would likely
+% want to deploy {\tt chkrootkit}. But this software is not yet
+% approved...}
 % \end{Verbatim}
 %
 %
@@ -345,6 +346,7 @@
 %
 % \section{Document formatting aids}
 %
+% \subsection{DoD title page}
 % \DescribeMacro{\makedodtitle} In a book-class document, use
 % |\makedodtitle| instead of \Verb!\maketitle!  and you will get an
 % organization logo on your title page. You'll also get the distribution
@@ -361,6 +363,7 @@
 %
 % This has not been tested much, and only on a book-class document.
 %
+% \subsection{Change log}
 % Write a changelog and call it \Verb!changelog.tex!. Include it in your
 % front matter just after the table of contents. Its format is like so:
 %
@@ -377,8 +380,10 @@
 %
 % Add new entries to the top of the changelog, not the bottom.
 %
+% \subsection{Executive summary}
 % An ``executive summary'' is supported. This is just a section containing a
-% table which lays out the IA controls documented. Its format is like so:
+% table which lists the larger security controls this document is about.
+% Its format is like so:
 %
 % \begin{Verbatim}[gobble=2]
 % \begin{executivesummary}
@@ -392,29 +397,20 @@
 % \section{Document identifiers}
 % \label{document_identifiers}
 %
-% Each named requirement is defined in the context of a document, which perhaps
-% some organization above has handed down as policy. To identify the
-% requirement unambiguously, you need both the requirement identifier and a way
-% to identify the document. Here are some suggested identifiers:
+% To identify a requirement you want to talk about without ambiguity,
+% you need to give a name for both the requirement and the document it
+% came from.  Since document identifiers are written in potentially
+% hundreds of compliance tags across a document, they need to be
+% short, but unique. Here are some example document identifiers:
 %
 % \begin{description}
 % \item[iacontrol] Information Assurance Controls, laid out in DoDI
 % 8500.2, e.g. DCMC-1.
 % \item[secctrl] Security Controls, laid out in NIST SP 800-53, e.g. SC-18c.
 % \item[unixsrg] UNIX Security Requirements Guide (SRG) Potential
-% Discrepancy Identifiers (PDIs), e.g. GEN008520. (The UNIX SRG was
-% long ago known as the UNIX Security Technical Implementation Guide
-% [STIG].)
-% \item[apachestig] Apache 2.2 STIG PDIs. These can be either from the
-% Apache 2.2 Server STIG or the Apache 2.2 Site STIG.
-% \item[spanstig] Sharing Peripherals Across the Network (SPAN) STIG
-% PDIs. (This STIG has been split out into several parts, and \textsf{cyber}
-% and its depending documents need to change accordingly.)
+% Discrepancy Identifiers (PDIs), e.g. GEN008520.
 % \item[rhel5stig] Red Hat Enterprise Linux (RHEL) 5 STIG PDIs.
-% \item[databasestig] Generic Database STIG PDIs.
 % \end{description}
-%
-% These identifiers are written in every compliance tag, so make them short but unique.
 %
 % \subsection{Defining requirements documents}
 %
@@ -468,12 +464,21 @@
 % \usepackage{cyber}
 % \end{Verbatim}
 %
-% This makes the indices that the \textsf{cyber} tags put entries into. Make sure
-% that if your document uses the hyperref package, that it does so before
-% using the \textsf{cyber} package.
+% This makes the indices that the \textsf{cyber} tags put entries into. 
 %
 % Somewhere in the preamble of your document, after you use the \textsf{cyber}
 % package, tell \textsf{cyber} about all your |\requirementsdocument|s.
+%
+% Somewhere at the end of your document, put
+%
+% \begin{Verbatim}[gobble=2]
+% \printindex{compliance}{Compliance}
+% \end{Verbatim}
+%
+% This grabs the index made and makes it part of the final document.
+%
+%
+% \subsection{Controls in contents}
 %
 % If you want the IA controls covered in a section to be summarized in the
 % section's title written in the table of contents, use this additional
@@ -495,13 +500,6 @@
 % into the wonderful world of \TeX\ and \LaTeX . Learn you a fix for great
 % good!
 %
-% In any case, somewhere at the end of your document, put
-%
-% \begin{Verbatim}[gobble=2]
-% \printindex{compliance}{Compliance}
-% \end{Verbatim}
-%
-% This grabs the index made and makes it part of the final document.
 %
 % \subsection{Temporarily suppressing index entries}
 %
@@ -523,7 +521,8 @@
 % \end{Verbatim}
 %
 %
-% \section{Constraints}
+% \section{Interactions with other packages}
+% If you use \textsf{hyperref}, do so \emph{before} you use \textsf{cyber}.
 %
 % Because \textsf{cyber} requires \textsf{longtable}, you can't use two
 % columns in a document that uses \textsf{cyber}. The requirement for
