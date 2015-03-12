@@ -525,17 +525,17 @@
 % document, to index mentions of requirements in the summarized part may be
 % redundant and undesirable.
 %
-% \DescribeMacro{\Iaindexingenabledfalse}
+% \DescribeMacro{\Cyberindexingenabledfalse}
 %
-% \DescribeMacro{\Iaindexingenabledtrue}
+% \DescribeMacro{\Cyberindexingenabledtrue}
 %
 % Use these macros to turn off and on (respectively) indexing of compliance
 % assertions for part of your document. For example:
 %
 % \begin{Verbatim}[gobble=2]
-% \Iaindexingenabledfalse
+% \Cyberindexingenabledfalse
 % \include{auto_summary}
-% \Iaindexingenabledtrue
+% \Cyberindexingenabledtrue
 % \end{Verbatim}
 %
 %
@@ -721,8 +721,8 @@
 %
 % This is here so you can turn off indexing for a portion of your document.
 %    \begin{macrocode}
-\newif\ifIaindexingenabled
-\Iaindexingenabledtrue
+\newif\ifCyberindexingenabled
+\Cyberindexingenabledtrue
 %    \end{macrocode}
 %
 % Style the text for per-document heads in the compliance index.
@@ -734,7 +734,7 @@
 % parameters: index name, implementation status, requirement name
 %    \begin{macrocode}
 \newcommand{\indexhelper}[3]{%
-\ifIaindexingenabled\index{compliance}{\csname indexhead@#1\endcsname @\iaindexheadstyle{\csname indexhead@#1\endcsname}!{#3}!{#2}}\fi}
+\ifCyberindexingenabled\index{compliance}{\csname indexhead@#1\endcsname @\iaindexheadstyle{\csname indexhead@#1\endcsname}!{#3}!{#2}}\fi}
 %    \end{macrocode}
 %
 % parameters: index name, prefix (e.g. {RHEL5: }), requirement name
