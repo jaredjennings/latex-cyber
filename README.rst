@@ -20,3 +20,5 @@ of requirements that are written across several discrete documents.
 cyber also helps you format your document in a form suitable inside
 the U.S. Department of Defense, by attaching distribution statements,
 destruction notices, organization logos, and security labels to it.
+
+cyber is released under the MIT license; see the file named LICENSE.
