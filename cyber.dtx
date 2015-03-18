@@ -22,7 +22,7 @@
 % SOFTWARE.
 % \fi
 %
-% ^^A We cannot \usepackage{cyber}, because it pulls in multind.
+% ^^A We cannot \usepackage{cyber}, because it pulls in index.
 % ^^A Therefore we do not get \filedate and \fileversion for free.
 % \def\filedate{2015/03/07}
 % \def\fileversion{v1.6}
@@ -547,7 +547,7 @@
 % longtable stems from the executive summary and changelog, which may have
 % enough rows to span pages.
 %
-% Because \textsf{cyber} requires \textsf{multind}, any other package which
+% Because \textsf{cyber} requires \textsf{index}, any other package which
 % automatically indexes things may not work in conjunction with
 % \textsf{cyber}.
 %
@@ -575,7 +575,7 @@
 % There are potentially hundreds of requirements with which to comply. So we
 % want them in their own index.
 %    \begin{macrocode}
-\RequirePackage{multind}
+\RequirePackage{index}
 %    \end{macrocode}
 % The \textsf{fancyhdr} package is how we add security labels.
 %    \begin{macrocode}
@@ -589,7 +589,7 @@
 %    \end{macrocode}
 % Index entries are written into the compliance index.
 %    \begin{macrocode}
-\makeindex{cyber_compliance}
+\newindex{cybercompliance}{cdx}{cnd}{Compliance}
 %    \end{macrocode}
 % Notations of compliance throughout the document are written in compliance.aux
 % and explanations.aux.
@@ -680,7 +680,7 @@
     % Say how to name requirements that come from this document.
     \expandafter\providecommand\csname #1\endcsname[1]{%
         \namedrequirement{#1}{#3}{##1}}
-    \expandafter\newcommand\csname indexhead@#1\endcsname{#2}
+    \expandafter\newcommand\csname indexhead#1\endcsname{#2}
 }
 %    \end{macrocode}
 % \end{macro}
@@ -701,14 +701,19 @@
 % Usage: |\namedrequirement| \marg{index name} \marg{official title prefix} \marg{requirement name}.
 % Example: |\namedrequirement{iacontrol}{IA Control }{IAAC-1}| will say ``IA
 % Control IAAC-1'' in the body of the document, and make an index entry in the
-% index called iacontrol.
+% compliance index under the ``IA Controls'' heading. (``IA Controls'' in this
+% example is the value of a parameter given to |\requirementsdocument|, not to
+% this macro.)
 %
 % This macro exists so it will be possible to redefine it to change how such a
 % thing looks. When referring to a named requirement in a document that you are
 % writing, use |\requirement| above, not this macro.
+%
+% The index macro is the same as in indexhelper below but without the last
+% |!{#2}| for the subhead.
 %    \begin{macrocode}
 \newcommand{\namedrequirement}[3]{%
-    \index{#1}{{#3}!}%
+    \index[cybercompliance]{\csname indexhead#1\endcsname @\iaindexheadstyle{\csname indexhead#1\endcsname}!{#3}!}%
     {\small #2\mbox{#3}}%
 }
 %    \end{macrocode}
@@ -734,7 +739,7 @@
 % parameters: index name, implementation status, requirement name
 %    \begin{macrocode}
 \newcommand{\indexhelper}[3]{%
-\ifCyberindexingenabled\index{compliance}{\csname indexhead@#1\endcsname @\iaindexheadstyle{\csname indexhead@#1\endcsname}!{#3}!{#2}}\fi}
+\ifCyberindexingenabled\index[cybercompliance]{\csname indexhead#1\endcsname @\iaindexheadstyle{\csname indexhead#1\endcsname}!{#3}!{#2}}\fi}
 %    \end{macrocode}
 %
 % parameters: index name, prefix (e.g. {RHEL5: }), requirement name
